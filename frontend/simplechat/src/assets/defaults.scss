@@ -1,4 +1,5 @@
-$c_grey: #ECEEF0;
+$c_grey: #D7D8DE;
+$c_grey--light: rgb(251, 248, 248);
 $c_white: #ffffff;
 $c_accent: #26547C;
 $c_red: #EF476F;
@@ -12,3 +13,22 @@ $sp_sm: 8px;
 $br_md: 8px;
 
 $bs_md: 0px 0px 3px 2px rgba($c_primary, 0.1);
+
+
+.button {
+  border: none;
+  border-radius: $br_md;
+  padding: 10px $sp_md;
+}
+
+.input {
+  border: 2px solid $c_grey;
+  border-radius: $br_md;
+  padding: $sp_sm $sp_md;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

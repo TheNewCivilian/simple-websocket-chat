@@ -1,7 +1,7 @@
 <template>
   <div class="client">
-    <Login />
-    <ChatWindow client />
+    <Login  v-if="logedIn == ''"/>
+    <ChatWindow v-if="logedIn != ''" client />
   </div>
 </template>
 
@@ -30,8 +30,5 @@ export default {
   .client {
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 </style>
