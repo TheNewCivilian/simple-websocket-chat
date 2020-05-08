@@ -7,6 +7,42 @@
   </div>
 </template>
 
+<script>
+import messageModel from '@/models/message';
+
+export default {
+  created() {
+    this.$options.sockets.onmessage = this.onMessage;
+  },
+  computed: {
+    userId() {
+      return this.$store.getters.userId;
+    },
+  },
+  methods: {
+    onMessage(message) {
+      if (typeof message.data !== 'string') {
+        return;
+      }
+
+      const data = JSON.parse(message.data);
+      console.log(data);
+
+      if (data.text) {
+        this.$store.dispatch('addMessage', messageModel(
+          data.text,
+          data.userId === this.userId,
+          data.username,
+          data.userId,
+        ));
+      } else if (data.user) {
+        this.$store.dispatch('setUsername', data.user);
+      }
+    },
+  },
+};
+</script>
+
 <style lang="scss">
   @import "@/assets/defaults.scss";
 

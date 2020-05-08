@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import WS from '../ws';
+
 export default {
   data() {
     return {
@@ -25,7 +27,14 @@ export default {
   },
   methods: {
     enterName() {
-      this.$store.dispatch('setUsername', this.username);
+      WS.sendCommand(
+        this.$socket,
+        'SUB',
+        {
+          name: this.username,
+          userId: 'askdjalskdjaksl',
+        },
+      );
     },
   },
 };

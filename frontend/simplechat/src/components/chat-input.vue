@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import messageModel from '@/models/message';
+import WS from '../ws';
 
 export default {
   data() {
@@ -30,8 +30,14 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.$store.dispatch('addMessage', messageModel(this.message, true, this.username));
-      this.$store.dispatch('addMessage', messageModel('Hey', false, 'no'));
+      WS.sendCommand(
+        this.$socket,
+        'SEND',
+        {
+          text: this.message,
+          userId: 'askdjalskdjaksl',
+        },
+      );
       this.message = '';
     },
   },
