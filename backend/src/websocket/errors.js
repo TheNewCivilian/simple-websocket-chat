@@ -19,6 +19,11 @@ const methodNotFound = {
   message: 'METHOD_NOT_FOUND',
 };
 
+const methodNotAllowed = {
+  error: true,
+  message: 'METHOD_NOT_ALLOWED',
+};
+
 module.exports = {
   dataFormatError,
   userExists,

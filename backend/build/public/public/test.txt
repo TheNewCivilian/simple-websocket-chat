@@ -1,3 +1,0 @@
-asdasdasd
-cp -R ./src/public ./build/public
- // cd ./build | node bundle.js",

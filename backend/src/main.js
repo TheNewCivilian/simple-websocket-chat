@@ -1,6 +1,6 @@
 const express = require('express');
 const WebSocket = require('ws');
-const SocketActions = require('./websocket/websocket');
+const SocketActions = require('./websocket');
 
 const socketPort = 8000;
 const websocket = new WebSocket.Server({ port: socketPort });
@@ -15,7 +15,7 @@ websocket.on('connection', (connection) => {
   });
 
   connection.on('close', () => {
-    SocketActions.onClose(connection);
+    SocketActions.onClose(websocket, connection);
   });
 });
 
