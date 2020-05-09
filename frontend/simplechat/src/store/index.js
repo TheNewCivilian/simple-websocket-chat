@@ -8,21 +8,43 @@ export default new Vuex.Store({
     username: '',
     userId: '',
     messages: [],
+    users: [],
+    selectedUser: '',
   },
   mutations: {
     SET_USERNAME(currentState, payload) {
       currentState.username = payload;
     },
+    SET_USERID(currentState, payload) {
+      currentState.userId = payload;
+    },
     ADD_MESSAGE(currentState, payload) {
       currentState.messages.push(payload);
+    },
+    // admin functions
+    SET_USERS(currentState, payload) {
+      currentState.users = payload;
+    },
+    SET_SELECTED_USER(currentState, payload) {
+      currentState.selectedUser = payload;
     },
   },
   actions: {
     setUsername(context, payload) {
       context.commit('SET_USERNAME', payload);
     },
+    setUserId(context, payload) {
+      context.commit('SET_USERID', payload);
+    },
     addMessage(context, payload) {
       context.commit('ADD_MESSAGE', payload);
+    },
+    // admin functions
+    setUsers(context, payload) {
+      context.commit('SET_USERS', payload);
+    },
+    setSelectedUser(context, payload) {
+      context.commit('SET_SELECTED_USER', payload);
     },
   },
   getters: {
@@ -31,6 +53,19 @@ export default new Vuex.Store({
     },
     messages(currentState) {
       return currentState.messages;
+    },
+    messagesForUser: (currentState) => (userId) => currentState.messages.filter(
+      (message) => message.users.includes(userId),
+    ),
+    userId(currentState) {
+      return currentState.userId;
+    },
+    // admin functions
+    users(currentState) {
+      return currentState.users;
+    },
+    selectedUser(currentState) {
+      return currentState.selectedUser;
     },
   },
 });

@@ -17,6 +17,9 @@ export default {
   },
   computed: {
     messages() {
+      if (this.$route.meta.admin) {
+        return this.$store.getters.messagesForUser(this.$store.getters.selectedUser);
+      }
       return this.$store.getters.messages;
     },
   },

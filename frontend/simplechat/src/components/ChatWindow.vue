@@ -2,7 +2,7 @@
   <div class="chat-window">
     <chat-messages />
     <chat-input />
-    <customer-list />
+    <customer-list v-if="$route.meta.admin"/>
   </div>
 </template>
 

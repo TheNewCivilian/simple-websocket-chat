@@ -24,7 +24,6 @@ export default {
       if (typeof message.data !== 'string') {
         return;
       }
-
       const data = JSON.parse(message.data);
       console.log(data);
 
@@ -34,9 +33,17 @@ export default {
           data.userId === this.userId,
           data.username,
           data.userId,
+          data.users,
         ));
       } else if (data.user) {
-        this.$store.dispatch('setUsername', data.user);
+        this.$store.dispatch('setUsername', data.user.username);
+        this.$store.dispatch('setUserId', data.user.userId);
+      } else if (data.users) {
+        this.$store.dispatch('setUsers', data.users);
+        const selectedUser = data.users.find(
+          (user) => user.selected_by.includes(this.userId),
+        ).userId;
+        this.$store.dispatch('setSelectedUser', selectedUser);
       }
     },
   },
@@ -59,7 +66,7 @@ export default {
   .logo {
     &__container {
       text-align: center;
-      margin: 50px;
+      padding: 50px;
     }
 
     &__image {

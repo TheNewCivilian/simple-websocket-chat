@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid';
 import WS from '../ws';
 
 export default {
@@ -27,14 +28,17 @@ export default {
   },
   methods: {
     enterName() {
-      WS.sendCommand(
-        this.$socket,
-        'SUB',
-        {
-          name: this.username,
-          userId: 'askdjalskdjaksl',
-        },
-      );
+      if (this.username) {
+        WS.sendCommand(
+          this.$socket,
+          'SUB',
+          {
+            name: this.username,
+            userId: uuidv4(),
+            admin: this.$route.meta.admin,
+          },
+        );
+      }
     },
   },
 };

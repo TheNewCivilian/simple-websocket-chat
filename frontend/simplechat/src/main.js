@@ -6,7 +6,7 @@ import router from './router';
 import store from './store';
 
 Vue.use(VueChatScroll);
-Vue.use(VueNativeSock, 'ws://localhost:8000', { format: 'json' });
+Vue.use(VueNativeSock, 'ws://localhost:8000', { reconnection: true, format: 'json' });
 
 Vue.config.productionTip = false;
 

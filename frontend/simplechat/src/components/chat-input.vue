@@ -27,17 +27,30 @@ export default {
     username() {
       return this.$store.getters.username;
     },
+    selectedUser() {
+      return this.$store.getters.selectedUser;
+    },
   },
   methods: {
     sendMessage() {
-      WS.sendCommand(
-        this.$socket,
-        'SEND',
-        {
-          text: this.message,
-          userId: 'askdjalskdjaksl',
-        },
-      );
+      if (!this.$route.meta.admin) {
+        WS.sendCommand(
+          this.$socket,
+          'SEND',
+          {
+            text: this.message,
+          },
+        );
+      } else {
+        WS.sendCommand(
+          this.$socket,
+          'SEND',
+          {
+            text: this.message,
+            destination: this.selectedUser,
+          },
+        );
+      }
       this.message = '';
     },
   },

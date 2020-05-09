@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Controller from '../views/Controller.vue';
 import Client from '../views/Client.vue';
 
 Vue.use(VueRouter);
@@ -10,11 +9,17 @@ const routes = [
     path: '/',
     name: 'Client',
     component: Client,
+    meta: {
+      admin: false,
+    },
   },
   {
     path: '/admin',
     name: 'Controller',
-    component: Controller,
+    component: Client,
+    meta: {
+      admin: true,
+    },
   },
 ];
 
