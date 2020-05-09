@@ -48,7 +48,7 @@ const onMessage = (websocket, connection, message) => {
 
   switch (receivedData.method) {
     case 'SUB':
-      if (!receivedData.data.name || !receivedData.data.userId || !receivedData.data.admin) {
+      if (!receivedData.data.name || !receivedData.data.userId || typeof receivedData.data.admin === 'undefined') {
         sendMessageObject(connection, Errors.dataFormatError);
         return;
       }

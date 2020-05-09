@@ -15,9 +15,16 @@ const sendUpdateToAdmins = (websocket, data) => {
 const sendUserList = (websocket) => {
   // TODO: Check if every admin is still alive
   const userIds = []
-  if (websocket.clients) {
-    websocket.clients.forEach((client) => userIds.push({userId: client.userId, username: client.userName, selected_by: client.selected_by }));
-  }
+  
+  websocket.clients.forEach((client) => {
+    if (client.userId) {
+      userIds.push({userId: client.userId, username: client.userName, selected_by: client.selected_by })
+      console.log({userId: client.userId, username: client.userName, selected_by: client.selected_by })
+    } else {
+      console.log(client.userId)
+    }
+  });
+  console.log(userIds)
   sendUpdateToAdmins(websocket, { users: userIds });
 }
 
@@ -28,11 +35,11 @@ const onSubscribe = (websocket, connection, data) => {
   connection.admin = data.admin;
   connection.selected_by = [];
 
+  // Confirm Username
+  sendMessageObject(connection, { user: {username:  connection.userName, userId: connection.userId} });
+
   // Send USer Update
   sendUserList(websocket);
-
-  // Confirm Username
-  sendMessageObject(connection, { user: connection.userName });
 }
 
 const onUnsubscribe = (websocket, connection) => {
@@ -40,7 +47,9 @@ const onUnsubscribe = (websocket, connection) => {
   if (connection.admin) {
     const userId = connection.userId
     websocket.clients.forEach((client) => {
-      client.selected_by = client.selected_by.filter((adminId) => adminId != userId);
+      if (client.selected_by) {
+        client.selected_by = client.selected_by.filter((adminId) => adminId != userId);
+      }
     })
   }
 
@@ -55,32 +64,47 @@ const onSend = (websocket, connection, data) => {
       text: data.text,
       userId: connection.userId,
       userName: connection.userName,
+      users: [connection.userId, data.destination ? data.destination : undefined],
     },
   );
 
   // send message to specific user
-  if (data.userId) {
+  if (data.destination) {
     websocket.clients.forEach((client) => {
-      if (client.userId == data.userId) {
+      if (client.userId == data.destination) {
         sendMessageObject(client,
           {
             text: data.text,
             userId: connection.userId,
-            userName: connection.userName
+            userName: connection.userName,
+            users: [connection.userId, data.destination],
           },
         );
       }
     });
+  } else {
+    sendMessageObject(connection,
+      {
+        text: data.text,
+        userId: connection.userId,
+        userName: connection.userName,
+        users: [connection.userId],
+      },
+    );
   }
 }
 
 const onSelect = (websocket, connection, data) => {
   const userId = data.userId
   websocket.clients.forEach((client) => {
-    if (client.userId = userId) {
-      client.selected_by.push(connection.userId)
+    if (client.userId === userId) {
+      if (!client.selected_by.includes(connection.userId)) {
+        client.selected_by.push(connection.userId)
+      }
     } else {
-      client.selected_by = client.selected_by.filter((adminId) => adminId != userId);
+      if (client.selected_by) {
+        client.selected_by = client.selected_by.filter((adminId) => adminId != connection.userId);
+      }
     }
   })
 
