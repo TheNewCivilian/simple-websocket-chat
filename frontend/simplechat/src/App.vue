@@ -25,16 +25,23 @@ export default {
       console.log(data);
 
       if (data.text) {
+        const ownMessage = data.userId === this.userId;
         this.$store.dispatch('addMessage', messageModel(
           data.text,
-          data.userId === this.userId,
+          ownMessage,
           data.userName,
           data.userId,
           data.users,
         ));
+        if (!ownMessage) {
+          this.sendNotification('New Message', data.text);
+        }
       } else if (data.user) {
         this.$store.dispatch('setUsername', data.user.username);
         this.$store.dispatch('setUserId', data.user.userId);
+        if (data.user.messages) {
+          this.$store.dispatch('setMessages', data.user.messages);
+        }
       } else if (data.users) {
         this.$store.dispatch('setUsers', data.users);
         const selectedUser = data.users.find(
@@ -42,6 +49,27 @@ export default {
         );
         if (selectedUser) {
           this.$store.dispatch('setSelectedUser', selectedUser.userId);
+        }
+      }
+    },
+    sendNotification(title, body) {
+      if ('Notification' in window) {
+        if (Notification.permission === 'granted') {
+          const notification = new Notification(title, {
+            body,
+            icon: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2Fb%2Fb2%2FSJ_AB_logo.svg%2F1280px-SJ_AB_logo.svg.png&f=1&nofb=1',
+          });
+          notification.send();
+        } else if (Notification.permission !== 'denied') {
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              const notification = new Notification(title, {
+                body,
+                icon: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2Fb%2Fb2%2FSJ_AB_logo.svg%2F1280px-SJ_AB_logo.svg.png&f=1&nofb=1',
+              });
+              notification.send();
+            }
+          });
         }
       }
     },

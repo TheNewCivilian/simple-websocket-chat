@@ -28,6 +28,9 @@ export default new Vuex.Store({
     SET_SELECTED_USER(currentState, payload) {
       currentState.selectedUser = payload;
     },
+    SET_MESSAGE(currentState, payload) {
+      currentState.messages = payload;
+    },
   },
   actions: {
     setUsername(context, payload) {
@@ -45,6 +48,9 @@ export default new Vuex.Store({
     },
     setSelectedUser(context, payload) {
       context.commit('SET_SELECTED_USER', payload);
+    },
+    setMessages(context, payload) {
+      context.commit('SET_MESSAGE', payload);
     },
   },
   getters: {
