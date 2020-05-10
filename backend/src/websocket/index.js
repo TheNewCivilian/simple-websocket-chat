@@ -58,7 +58,7 @@ const onMessage = (websocket, connection, message) => {
       onUnsubscribe(websocket, connection)
       break;
     case 'SEND':
-      if (!receivedData.data.text) {
+      if (!receivedData.data.text || !receivedData.data.timeStamp) {
         sendMessageObject(connection, Errors.dataFormatError);
         return;
       }

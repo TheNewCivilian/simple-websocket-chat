@@ -1,4 +1,4 @@
-const messages = []
+let messages = []
 
 const sendMessageObject = (connection, message) => {
   connection.send(JSON.stringify(message));
@@ -18,11 +18,13 @@ const checkAllUsersAlive = (websocket) => {
   const usersAlive = Array.from(websocket.clients).map((user) => user.userId);
 
   websocket.clients.forEach((client) => {
-    client.selected_by = client.selected_by.filter((admin) => usersAlive.includes(admin))
+    if (client.selected_by) {
+      client.selected_by = client.selected_by.filter((admin) => usersAlive.includes(admin))
+    }
   })
 
-  // TODO: check all stored messages and delete old
-  // messages.filter((message) => message.timeStamp < )
+  const now = new Date();
+  messages = messages.filter((message) => !message.timeStamp < (now.setHours(now.getHours() - 1)))
 }
 
 const sendUserList = (websocket) => {
@@ -78,46 +80,28 @@ const onUnsubscribe = (websocket, connection) => {
 
 const onSend = (websocket, connection, data) => {
 
-  messages.push({
+  messageObject = {
     text: data.text,
     userId: connection.userId,
     userName: connection.userName,
     users: [connection.userId, data.destination ? data.destination : "admins"],
-  });
+    timeStamp: data.timeStamp,
+  }
+
+  messages.push(messageObject);
 
   // Inform all admins
-  sendUpdateToAdmins(websocket,
-    {
-      text: data.text,
-      userId: connection.userId,
-      userName: connection.userName,
-      users: [connection.userId, data.destination ? data.destination : "admins"],
-    },
-  );
+  sendUpdateToAdmins(websocket, messageObject);
 
   // send message to specific user
   if (data.destination) {
     websocket.clients.forEach((client) => {
       if (!client.admin && client.userId == data.destination) {
-        sendMessageObject(client,
-          {
-            text: data.text,
-            userId: connection.userId,
-            userName: connection.userName,
-            users: [connection.userId, data.destination],
-          },
-        );
+        sendMessageObject(client, messageObject);
       }
     });
   } else {
-    sendMessageObject(connection,
-      {
-        text: data.text,
-        userId: connection.userId,
-        userName: connection.userName,
-        users: [connection.userId, "admins"],
-      },
-    );
+    sendMessageObject(connection, messageObject);
   }
 }
 
