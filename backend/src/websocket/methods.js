@@ -1,3 +1,5 @@
+const messages = []
+
 const sendMessageObject = (connection, message) => {
   connection.send(JSON.stringify(message));
 };
@@ -36,7 +38,7 @@ const onSubscribe = (websocket, connection, data) => {
   connection.selected_by = [];
 
   // Confirm Username
-  sendMessageObject(connection, { user: {username:  connection.userName, userId: connection.userId} });
+  sendMessageObject(connection, { user: {username:  connection.userName, userId: connection.userId, messages: connection.admin ? messages : undefined} });
 
   // Send USer Update
   sendUserList(websocket);
@@ -58,13 +60,21 @@ const onUnsubscribe = (websocket, connection) => {
 }
 
 const onSend = (websocket, connection, data) => {
+
+  messages.push({
+    text: data.text,
+    userId: connection.userId,
+    userName: connection.userName,
+    users: [connection.userId, data.destination ? data.destination : "admins"],
+  });
+
   // Inform all admins
   sendUpdateToAdmins(websocket,
     {
       text: data.text,
       userId: connection.userId,
       userName: connection.userName,
-      users: [connection.userId, data.destination ? data.destination : undefined],
+      users: [connection.userId, data.destination ? data.destination : "admins"],
     },
   );
 
@@ -88,7 +98,7 @@ const onSend = (websocket, connection, data) => {
         text: data.text,
         userId: connection.userId,
         userName: connection.userName,
-        users: [connection.userId],
+        users: [connection.userId, "admins"],
       },
     );
   }
