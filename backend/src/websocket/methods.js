@@ -71,7 +71,7 @@ const onSend = (websocket, connection, data) => {
   // send message to specific user
   if (data.destination) {
     websocket.clients.forEach((client) => {
-      if (client.userId == data.destination) {
+      if (!client.admin && client.userId == data.destination) {
         sendMessageObject(client,
           {
             text: data.text,
