@@ -12,6 +12,9 @@
         v-for="(customer, index) in customers"
         :key="`customer-${index}`"
         @click="selectCustomer(customer.userId)"
+        :class="customer.selected_by.find(
+          (adminId) => adminId != userId) ? 'customer__card--selected' : ''
+        "
       >
         <div class="customer__profile">
           <div
@@ -79,6 +82,14 @@ export default {
       padding: $sp_sm;
       box-shadow: $bs_md;
       border-radius: $br_md;
+
+      &--selected {
+        box-shadow: $bs_lt;
+
+        .customer__name {
+          color: $c_grey;
+        }
+      }
     }
 
     &__name {
@@ -89,6 +100,7 @@ export default {
       box-shadow: $bs_md;
       border-radius: 50%;
       padding: $sp_sm;
+
       &__circle {
         height: $sp_md;
         width: $sp_md;

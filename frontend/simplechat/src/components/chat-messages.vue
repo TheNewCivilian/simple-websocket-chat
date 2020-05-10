@@ -4,6 +4,7 @@
       v-for="(message, index) in messages"
       :key="`message-${index}`"
       :message="message"
+      :hideDot="hideDot(message, index)"
     />
   </div>
 </template>
@@ -17,10 +18,20 @@ export default {
   },
   computed: {
     messages() {
+      console.log(this.$store.getters.messages);
       if (this.$route.meta.admin) {
         return this.$store.getters.messagesForUser(this.$store.getters.selectedUser);
       }
       return this.$store.getters.messages;
+    },
+  },
+  methods: {
+    hideDot(message, index) {
+      if (index > 0) {
+        console.log(this.messages[index - 1].userId);
+        return message.self === this.messages[index - 1].self;
+      }
+      return false;
     },
   },
 };

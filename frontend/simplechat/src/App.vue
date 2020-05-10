@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <div class="logo__container">
-      <img class="logo__image" src="https://vignette.wikia.nocookie.net/logopedia/images/e/e7/SJ_(rail_operator)_logo.svg/revision/latest?cb=20140104224553"/>
-    </div>
     <router-view/>
   </div>
 </template>
@@ -31,7 +28,7 @@ export default {
         this.$store.dispatch('addMessage', messageModel(
           data.text,
           data.userId === this.userId,
-          data.username,
+          data.userName,
           data.userId,
           data.users,
         ));
@@ -42,8 +39,10 @@ export default {
         this.$store.dispatch('setUsers', data.users);
         const selectedUser = data.users.find(
           (user) => user.selected_by.includes(this.userId),
-        ).userId;
-        this.$store.dispatch('setSelectedUser', selectedUser);
+        );
+        if (selectedUser) {
+          this.$store.dispatch('setSelectedUser', selectedUser.userId);
+        }
       }
     },
   },

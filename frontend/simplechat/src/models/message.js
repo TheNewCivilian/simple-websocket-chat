@@ -1,10 +1,10 @@
 
-export default (text, self, username, userId, users) => {
+export default (text, self, userName, userId, users) => {
   const timeStamp = new Date().getTime();
   return {
     text,
     self,
-    username,
+    userName,
     timeStamp,
     userId,
     users,

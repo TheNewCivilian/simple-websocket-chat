@@ -6,13 +6,13 @@
         <div class="message__profile__circle message__profile__circle--self" />
       </div>
       <div class="message__username">
-        {{message.username}}
+        {{message.userName}}
       </div>
     </div>
 
-    <div v-else class="message__row">
+    <div  class="message__row" v-if="!message.self && !hideDot">
       <div class="message__username">
-        {{message.username}}
+        {{message.userName}}
       </div>
       <div class="message__profile">
         <div class="message__profile__circle" />
@@ -28,6 +28,7 @@
 export default {
   props: {
     message: Object,
+    hideDot: Boolean,
   },
 };
 </script>
@@ -70,6 +71,7 @@ export default {
       border: 1px solid $c_grey;
       border-radius: $br_md;
       margin: 0 $sp_lg;
+      margin-top: 4px;
       border-top-right-radius: 0;
 
       &--self {
