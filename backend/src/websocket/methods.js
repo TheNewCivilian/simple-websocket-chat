@@ -38,7 +38,13 @@ const onSubscribe = (websocket, connection, data) => {
   connection.selected_by = [];
 
   // Confirm Username
-  sendMessageObject(connection, { user: {username:  connection.userName, userId: connection.userId, messages: connection.admin ? messages : undefined} });
+  sendMessageObject(connection, {
+    user: {
+      username:  connection.userName,
+      userId: connection.userId,
+      messages: connection.admin ? messages : messages.filter((message) => message.users.includes(connection.userId)),
+    },
+  });
 
   // Send USer Update
   sendUserList(websocket);
