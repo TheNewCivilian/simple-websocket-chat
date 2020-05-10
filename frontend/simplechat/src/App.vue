@@ -6,10 +6,20 @@
 
 <script>
 import messageModel from '@/models/message';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   created() {
     this.$options.sockets.onmessage = this.onMessage;
+
+    const oldUserId = localStorage.getItem('sc_userId');
+    if (oldUserId) {
+      this.$store.dispatch('setUserId', oldUserId);
+    } else {
+      const newUserId = uuidv4();
+      this.$store.dispatch('setUserId', newUserId);
+      localStorage.setItem('sc_userId', newUserId);
+    }
   },
   computed: {
     userId() {
@@ -17,11 +27,11 @@ export default {
     },
   },
   methods: {
-    onMessage(message) {
-      if (typeof message.data !== 'string') {
+    onMessage(recievedMessage) {
+      if (typeof recievedMessage.data !== 'string') {
         return;
       }
-      const data = JSON.parse(message.data);
+      const data = JSON.parse(recievedMessage.data);
       console.log(data);
 
       if (data.text) {
@@ -38,9 +48,14 @@ export default {
         }
       } else if (data.user) {
         this.$store.dispatch('setUsername', data.user.username);
-        this.$store.dispatch('setUserId', data.user.userId);
         if (data.user.messages) {
-          this.$store.dispatch('setMessages', data.user.messages);
+          this.$store.dispatch('setMessages', data.user.messages.map((message) => messageModel(
+            message.text,
+            message.userId === this.userId,
+            message.userName,
+            message.userId,
+            message.users,
+          )));
         }
       } else if (data.users) {
         this.$store.dispatch('setUsers', data.users);

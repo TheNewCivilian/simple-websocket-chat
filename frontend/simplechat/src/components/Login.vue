@@ -17,14 +17,18 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid';
 import WS from '../ws';
 
 export default {
   data() {
     return {
-      username: '',
+      username: this.loadUsername(),
     };
+  },
+  computed: {
+    userId() {
+      return this.$store.getters.userId;
+    },
   },
   methods: {
     enterName() {
@@ -34,11 +38,19 @@ export default {
           'SUB',
           {
             name: this.username,
-            userId: uuidv4(),
+            userId: this.userId,
             admin: this.$route.meta.admin,
           },
         );
+        localStorage.setItem('sc_userName', this.username);
       }
+    },
+    loadUsername() {
+      const oldUserName = localStorage.getItem('sc_userName');
+      if (oldUserName) {
+        return oldUserName;
+      }
+      return '';
     },
   },
 };
