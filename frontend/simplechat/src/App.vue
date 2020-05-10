@@ -12,13 +12,17 @@ export default {
   created() {
     this.$options.sockets.onmessage = this.onMessage;
 
-    const oldUserId = localStorage.getItem('sc_userId');
-    if (oldUserId) {
-      this.$store.dispatch('setUserId', oldUserId);
+    if (!this.$route.meta.admin) {
+      const oldUserId = localStorage.getItem('sc_userId');
+      if (oldUserId) {
+        this.$store.dispatch('setUserId', oldUserId);
+      } else {
+        const newUserId = uuidv4();
+        this.$store.dispatch('setUserId', newUserId);
+        localStorage.setItem('sc_userId', newUserId);
+      }
     } else {
-      const newUserId = uuidv4();
-      this.$store.dispatch('setUserId', newUserId);
-      localStorage.setItem('sc_userId', newUserId);
+      this.$store.dispatch('setUserId', uuidv4());
     }
   },
   computed: {
