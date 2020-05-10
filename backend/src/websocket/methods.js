@@ -14,8 +14,19 @@ const sendUpdateToAdmins = (websocket, data) => {
   }
 };
 
+const checkAllUsersAlive = (websocket) => {
+  const usersAlive = Array.from(websocket.clients).map((user) => user.userId);
+
+  websocket.clients.forEach((client) => {
+    client.selected_by = client.selected_by.filter((admin) => usersAlive.includes(admin))
+  })
+
+  // TODO: check all stored messages and delete old
+  // messages.filter((message) => message.timeStamp < )
+}
+
 const sendUserList = (websocket) => {
-  // TODO: Check if every admin is still alive
+  checkAllUsersAlive(websocket)
   const userIds = []
   
   websocket.clients.forEach((client) => {
