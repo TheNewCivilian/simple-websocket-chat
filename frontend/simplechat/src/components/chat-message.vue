@@ -1,7 +1,7 @@
 <template>
   <div class="message" :class="message.self?'message--self':''">
 
-    <div v-if="message.self" class="message__row message__row--self">
+    <div v-if="message.self && !hideDot" class="message__row message__row--self">
       <div class="message__profile">
         <div class="message__profile__circle message__profile__circle--self" />
       </div>

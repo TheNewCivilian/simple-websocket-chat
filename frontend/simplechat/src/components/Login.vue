@@ -50,7 +50,7 @@ export default {
       if (oldUserName) {
         return oldUserName;
       }
-      return '';
+      return this.$route.meta.admin ? 'SJ - ' : '';
     },
   },
 };

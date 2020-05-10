@@ -39,6 +39,7 @@ export default {
           'SEND',
           {
             text: this.message,
+            timeStamp: new Date().getTime(),
           },
         );
       } else {
@@ -48,6 +49,7 @@ export default {
           {
             text: this.message,
             destination: this.selectedUser,
+            timeStamp: new Date().getTime(),
           },
         );
       }
