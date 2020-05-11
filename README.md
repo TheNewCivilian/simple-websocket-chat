@@ -26,7 +26,6 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 
 
 
@@ -45,7 +44,9 @@
     <a href="https://github.com/github_username/repo"><strong>Explore the docs »</strong></a>
     <br /> -->
     <br />
-    <a href="https://github.com/github_username/repo">View Demo</a>
+    <a href="https://chat.neuz8t.de/">View Client Demo</a>
+    ·
+    <a href="https://chat.neuz8t.de/admin">View Admin Demo</a>
     ·
     <a href="https://github.com/TheNewCivilian/simple-websocket-chat/issues">Report Bug</a>
     ·
@@ -63,7 +64,6 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Usage](#usage)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
@@ -128,7 +128,7 @@ In `frontend/simplechat/dist` you will find static web content which represents 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/github_username/repo/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/TheNewCivilian/simple-websocket-chat/issues) for a list of proposed features (and known issues).
 
 
 
@@ -171,7 +171,5 @@ Project Link: [https://github.com/TheNewCivilian/simple-websocket-chat](https://
 [stars-url]: https://github.com/TheNewCivilian/simple-websocket-chat/stargazers
 [issues-shield]: https://img.shields.io/github/issues/TheNewCivilian/simple-websocket-chat.svg?style=flat-square
 [issues-url]: https://github.com/TheNewCivilian/simple-websocket-chat/issues
-[license-shield]: https://img.shields.io/github/license/TheNewCivilian/simple-websocket-chat.svg?style=flat-square
-[license-url]: https://github.com/TheNewCivilian/simple-websocket-chat/blob/master/LICENSE.txt
 [product-screenshot1]: img/Screenshot1.png
 [product-screenshot2]: img/Screenshot2.png
