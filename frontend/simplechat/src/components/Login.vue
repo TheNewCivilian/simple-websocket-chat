@@ -2,16 +2,18 @@
   <div class="login">
     <span class="login__description">Choose a nickname to start:</span>
     <div class="login__row">
-      <input
-        class="login__input"
-        v-model="username"
-      />
-      <button
-        class="login__button"
-        @click="enterName"
-      >
-        Start
-      </button>
+      <form @submit="enterName">
+        <input
+          class="login__input"
+          v-model="username"
+        />
+        <button
+          class="login__button"
+          type="submit"
+        >
+          Start
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -31,7 +33,8 @@ export default {
     },
   },
   methods: {
-    enterName() {
+    enterName(event) {
+      event.preventDefault();
       if (this.username) {
         WS.sendCommand(
           this.$socket,

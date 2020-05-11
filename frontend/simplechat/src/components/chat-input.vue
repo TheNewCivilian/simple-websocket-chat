@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-input">
+  <form @submit="sendMessage" class="chat-input">
     <input
       class="chat-input__message"
       :placeholder="`You are chatting as ${username}`"
@@ -7,11 +7,10 @@
     />
     <button
       class="chat-input__send"
-      @click="sendMessage"
     >
       Send
     </button>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -32,7 +31,8 @@ export default {
     },
   },
   methods: {
-    sendMessage() {
+    sendMessage(event) {
+      event.preventDefault();
       if (!this.$route.meta.admin) {
         WS.sendCommand(
           this.$socket,
