@@ -24,14 +24,14 @@
               : ''"
           />
         </div>
-        <span class="customer__name">{{customer.username}}</span>
+        <span class="customer__name">{{customer.userName}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import WS from '../ws';
+import WS from '@/ws';
 
 export default {
   computed: {
@@ -47,13 +47,7 @@ export default {
   },
   methods: {
     selectCustomer(customerId) {
-      WS.sendCommand(
-        this.$socket,
-        'SELECT',
-        {
-          userId: customerId,
-        },
-      );
+      WS.sendSelect(this.$socket, customerId);
     },
   },
 };

@@ -36,14 +36,11 @@ export default {
     enterName(event) {
       event.preventDefault();
       if (this.username) {
-        WS.sendCommand(
+        WS.sendSubscribe(
           this.$socket,
-          'SUB',
-          {
-            name: this.username,
-            userId: this.userId,
-            admin: this.$route.meta.admin,
-          },
+          this.userId,
+          this.username,
+          this.$route.meta.admin,
         );
         localStorage.setItem('sc_userName', this.username);
       }

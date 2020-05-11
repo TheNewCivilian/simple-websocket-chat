@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import ChatMessages from '@/components/chat-messages.vue';
-import ChatInput from '@/components/chat-input.vue';
-import CustomerList from '@/components/customer-list.vue';
+import ChatMessages from '@/components/ChatWindow/chat-messages.vue';
+import ChatInput from '@/components/ChatWindow/chat-input.vue';
+import CustomerList from '@/components/ChatWindow/customer-list.vue';
 
 export default {
   components: {

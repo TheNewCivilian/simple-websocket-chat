@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import ChatMessage from '@/components/chat-message.vue';
+import ChatMessage from '@/components/ChatWindow/chat-message.vue';
 
 export default {
   components: {
@@ -18,7 +18,6 @@ export default {
   },
   computed: {
     messages() {
-      console.log(this.$store.getters.messages);
       if (this.$route.meta.admin) {
         return this.$store.getters.messagesForUser(this.$store.getters.selectedUser);
       }
@@ -28,7 +27,6 @@ export default {
   methods: {
     hideDot(message, index) {
       if (index > 0) {
-        console.log(this.messages[index - 1].userId);
         return message.userId === this.messages[index - 1].userId;
       }
       return false;

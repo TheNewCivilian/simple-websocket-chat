@@ -1,14 +1,14 @@
 let messages = []
 
-const sendMessageObject = (connection, message) => {
-  connection.send(JSON.stringify(message));
+const sendMessageObject = (connection, method, payload) => {
+  connection.send(JSON.stringify({ method, payload }));
 };
 
-const sendUpdateToAdmins = (websocket, data) => {
+const sendUpdateToAdmins = (websocket, method, payload) => {
   if (websocket.clients) {
     websocket.clients.forEach((client) => {
       if (client.admin) {
-        sendMessageObject(client, data);
+        sendMessageObject(client, method, payload);
       }
     });
   }
@@ -33,27 +33,27 @@ const sendUserList = (websocket) => {
   
   websocket.clients.forEach((client) => {
     if (client.userId) {
-      userIds.push({userId: client.userId, username: client.userName, selected_by: client.selected_by })
-      console.log({userId: client.userId, username: client.userName, selected_by: client.selected_by })
-    } else {
-      console.log(client.userId)
+      userIds.push({
+        userId: client.userId,
+        userName: client.userName,
+        selected_by: client.selected_by,
+      });
     }
   });
-  console.log(userIds)
-  sendUpdateToAdmins(websocket, { users: userIds });
+  sendUpdateToAdmins(websocket, 'USERS', { users: userIds });
 }
 
 const onSubscribe = (websocket, connection, data) => {
   // Give connection needed Information
-  connection.userName = data.name;
+  connection.userName = data.userName;
   connection.userId = data.userId;
   connection.admin = data.admin;
   connection.selected_by = [];
 
   // Confirm Username
-  sendMessageObject(connection, {
+  sendMessageObject(connection, 'SUB', {
     user: {
-      username:  connection.userName,
+      userName:  connection.userName,
       userId: connection.userId,
       messages: connection.admin ? messages : messages.filter((message) => message.users.includes(connection.userId)),
     },
@@ -84,25 +84,29 @@ const onSend = (websocket, connection, data) => {
     text: data.text,
     userId: connection.userId,
     userName: connection.userName,
-    users: [connection.userId, data.destination ? data.destination : "admins"],
+    users: [connection.userId, data.destination],
     timeStamp: data.timeStamp,
+    admin: connection.admin,
   }
 
   messages.push(messageObject);
 
   // Inform all admins
-  sendUpdateToAdmins(websocket, messageObject);
+  sendUpdateToAdmins(websocket, 'MESSAGE', messageObject);
+
+  if (!connection.admin) {
+    sendMessageObject(connection, 'MESSAGE', messageObject);
+  }
 
   // send message to specific user
-  if (data.destination) {
+  if (data.destination != 'admin') {
     websocket.clients.forEach((client) => {
       if (!client.admin && client.userId == data.destination) {
-        sendMessageObject(client, messageObject);
+        sendMessageObject(client, 'MESSAGE', messageObject);
       }
     });
-  } else {
-    sendMessageObject(connection, messageObject);
   }
+
   sendUserList(websocket);
 }
 

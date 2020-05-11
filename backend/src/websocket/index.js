@@ -33,14 +33,14 @@ const parseMessage = (message) => {
 };
 
 const onConnect = (connection) => {
-  sendMessageObject(connection, { connect: true });
+  sendMessageObject(connection, 'CONNECT', { error: false });
 };
 
 const onMessage = (websocket, connection, message) => {
   const receivedData = parseMessage(message);
 
   if (receivedData.error) {
-    sendMessageObject(connection, Errors.dataFormatError);
+    sendMessageObject(connection, 'ERROR', Errors.dataFormatError);
     return;
   }
 
@@ -48,8 +48,8 @@ const onMessage = (websocket, connection, message) => {
 
   switch (receivedData.method) {
     case 'SUB':
-      if (!receivedData.data.name || !receivedData.data.userId || typeof receivedData.data.admin === 'undefined') {
-        sendMessageObject(connection, Errors.dataFormatError);
+      if (!receivedData.data.userName || !receivedData.data.userId || typeof receivedData.data.admin === 'undefined') {
+        sendMessageObject(connection, 'ERROR', Errors.dataFormatError);
         return;
       }
       onSubscribe(websocket, connection, receivedData.data)
@@ -57,25 +57,25 @@ const onMessage = (websocket, connection, message) => {
     case 'UNSUB':
       onUnsubscribe(websocket, connection)
       break;
-    case 'SEND':
-      if (!receivedData.data.text || !receivedData.data.timeStamp) {
-        sendMessageObject(connection, Errors.dataFormatError);
+    case 'MESSAGE':
+      if (!receivedData.data.text || !receivedData.data.timeStamp || !receivedData.data.destination) {
+        sendMessageObject(connection, 'ERROR', Errors.dataFormatError);
         return;
       }
       onSend(websocket, connection, receivedData.data)
       break;
     case 'SELECT':
       if (connection.admin) {
-        sendMessageObject(connection, Errors.methodNotAllowed);
+        sendMessageObject(connection, 'ERROR', Errors.methodNotAllowed);
       }
       if (!receivedData.data.userId) {
-        sendMessageObject(connection, Errors.dataFormatError);
+        sendMessageObject(connection, 'ERROR', Errors.dataFormatError);
         return;
       }
       onSelect(websocket, connection, receivedData.data)
       break;
     default:
-      sendMessageObject(connection, Errors.methodNotFound);
+      sendMessageObject(connection, 'ERROR', Errors.methodNotFound);
       break;
   }
 };

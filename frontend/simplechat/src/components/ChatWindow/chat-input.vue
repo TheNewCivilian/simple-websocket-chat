@@ -2,7 +2,7 @@
   <form @submit="sendMessage" class="chat-input">
     <input
       class="chat-input__message"
-      :placeholder="`You are chatting as ${username}`"
+      :placeholder="`You are chatting as ${userName}`"
       v-model="message"
     />
     <button
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import WS from '../ws';
+import WS from '@/ws';
 
 export default {
   data() {
@@ -23,8 +23,8 @@ export default {
     };
   },
   computed: {
-    username() {
-      return this.$store.getters.username;
+    userName() {
+      return this.$store.getters.userName;
     },
     selectedUser() {
       return this.$store.getters.selectedUser;
@@ -33,26 +33,11 @@ export default {
   methods: {
     sendMessage(event) {
       event.preventDefault();
-      if (!this.$route.meta.admin) {
-        WS.sendCommand(
-          this.$socket,
-          'SEND',
-          {
-            text: this.message,
-            timeStamp: new Date().getTime(),
-          },
-        );
-      } else {
-        WS.sendCommand(
-          this.$socket,
-          'SEND',
-          {
-            text: this.message,
-            destination: this.selectedUser,
-            timeStamp: new Date().getTime(),
-          },
-        );
-      }
+      WS.sendMessage(
+        this.$socket,
+        this.message,
+        this.$route.meta.admin ? this.selectedUser : 'admin',
+      );
       this.message = '';
     },
   },

@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    username: '',
+    userName: '',
     userId: '',
     messages: [],
     users: [],
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_USERNAME(currentState, payload) {
-      currentState.username = payload;
+      currentState.userName = payload;
     },
     SET_USERID(currentState, payload) {
       currentState.userId = payload;
@@ -54,14 +54,32 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    username(currentState) {
-      return currentState.username;
+    userName(currentState) {
+      return currentState.userName;
     },
     messages(currentState) {
       return currentState.messages;
     },
-    messagesForUser: (currentState) => (userId) => currentState.messages.filter(
-      (message) => message.users.includes(userId),
+    messagesForUser: (currentState) => (selectedUserId) => currentState.messages.filter(
+      (message) => {
+        console.log(selectedUserId);
+        console.log(message);
+        if (message.users.includes(selectedUserId) && message.users.includes(currentState.userId)) {
+          return true;
+        }
+        if (message.users.includes(selectedUserId) && message.users.includes('admin')) {
+          return true;
+        }
+
+        if (
+          message.users.includes(selectedUserId)
+          && message.userId !== selectedUserId
+          && message.admin
+        ) {
+          return true;
+        }
+        return false;
+      },
     ),
     userId(currentState) {
       return currentState.userId;
