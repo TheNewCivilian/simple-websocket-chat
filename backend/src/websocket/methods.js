@@ -103,6 +103,7 @@ const onSend = (websocket, connection, data) => {
   } else {
     sendMessageObject(connection, messageObject);
   }
+  sendUserList(websocket);
 }
 
 const onSelect = (websocket, connection, data) => {

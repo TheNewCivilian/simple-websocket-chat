@@ -33,7 +33,7 @@ const parseMessage = (message) => {
 };
 
 const onConnect = (connection) => {
-  sendMessageObject(connection, { error: false });
+  sendMessageObject(connection, { connect: true });
 };
 
 const onMessage = (websocket, connection, message) => {

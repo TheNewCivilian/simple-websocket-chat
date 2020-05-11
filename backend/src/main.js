@@ -1,8 +1,7 @@
-const express = require('express');
 const WebSocket = require('ws');
 const SocketActions = require('./websocket');
 
-const socketPort = 8000;
+const socketPort = 3000;
 const websocket = new WebSocket.Server({ port: socketPort });
 
 console.log(`Websocket Server started on ${socketPort}`);
@@ -18,14 +17,3 @@ websocket.on('connection', (connection) => {
     SocketActions.onClose(websocket, connection);
   });
 });
-
-
-
-const app = express();
-const webPort = 3000;
-
-app.use(express.static('public'))
-
-app.get('/', (req, res) => res.send('Hello World!'))
-
-app.listen(webPort, () => console.log(`Example app listening at http://localhost:${webPort}`))
