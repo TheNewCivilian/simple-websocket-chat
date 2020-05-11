@@ -7,6 +7,7 @@
 <script>
 import messageModel from '@/models/message';
 import { v4 as uuidv4 } from 'uuid';
+import WS from './ws';
 
 export default {
   created() {
@@ -28,6 +29,9 @@ export default {
   computed: {
     userId() {
       return this.$store.getters.userId;
+    },
+    username() {
+      return this.$store.getters.username;
     },
   },
   methods: {
@@ -68,6 +72,18 @@ export default {
         );
         if (selectedUser) {
           this.$store.dispatch('setSelectedUser', selectedUser.userId);
+        }
+      } else if (data.connect) {
+        if (this.username) {
+          WS.sendCommand(
+            this.$socket,
+            'SUB',
+            {
+              name: this.username,
+              userId: this.userId,
+              admin: this.$route.meta.admin,
+            },
+          );
         }
       }
     },

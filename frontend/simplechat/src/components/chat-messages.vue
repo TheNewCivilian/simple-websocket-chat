@@ -29,7 +29,7 @@ export default {
     hideDot(message, index) {
       if (index > 0) {
         console.log(this.messages[index - 1].userId);
-        return message.self === this.messages[index - 1].self;
+        return message.userId === this.messages[index - 1].userId;
       }
       return false;
     },
