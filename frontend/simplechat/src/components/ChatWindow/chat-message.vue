@@ -58,10 +58,10 @@ export default {
         height: $sp_md;
         width: $sp_md;
         border-radius: 50%;
-        background-color: $c_orange;
+        background-color: $c_red;
 
         &--self {
-          background-color: $c_red;
+          background-color: $c_orange;
         }
       }
     }

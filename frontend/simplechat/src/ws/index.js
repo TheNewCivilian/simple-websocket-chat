@@ -1,5 +1,7 @@
 import sendNotification from '@/helpers/notification';
 
+const chatIcon = require('../assets/simple_chat.svg');
+
 const sendCommand = (socket, method, data = null) => {
   if (data === null) {
     socket.send(method);
@@ -78,7 +80,7 @@ const onResponse = (store, response, socket, userName, userId, admin) => {
         admin: payload.admin,
       });
       if (!ownMessage) {
-        sendNotification('New Message', payload.text);
+        sendNotification(`New Message from ${payload.userName}`, payload.text, chatIcon);
       }
       break;
     }

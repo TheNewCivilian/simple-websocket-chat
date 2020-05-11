@@ -99,7 +99,7 @@ export default {
         height: $sp_md;
         width: $sp_md;
         border-radius: 50%;
-        background-color: $c_orange;
+        background-color: $c_green;
 
         &--active {
           background-color: $c_red;
