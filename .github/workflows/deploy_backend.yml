@@ -20,7 +20,7 @@ jobs:
       - name: Publish
         uses: nogsantos/scp-deploy@master
         with:
-          src: ./backend/*
+          src: ./backend/build/*
           host: ${{ secrets.SSH_HOST }}
           remote: ${{ secrets.SSH_BE_DIR }}
           port: ${{ secrets.SSH_PORT }}

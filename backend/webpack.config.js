@@ -11,8 +11,10 @@ config.entry = "./src/main.js"
 // We build for node
 config.target = "node"
 
+config.mode = "production"
+
 // Node module dependencies should not be bundled
-config.externals = [nodeExternals()]
+// config.externals = [nodeExternals()]
 
 // We are outputting a real node app!
 config.node = {
@@ -44,7 +46,6 @@ config.module.rules = [
   // Use babel and eslint to build and validate JavaScript
   {
     test: /\.js$/,
-    exclude: /node_modules/,
     include: [
       path.resolve(__dirname, "src")
     ],
