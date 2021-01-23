@@ -1,0 +1,48 @@
+name: Backend deploy
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare
+        run: |
+          cd backend
+          npm i
+      - name: Build
+        run: |
+          cd backend
+          npm run build
+      - name: Publish
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: ./backend/*
+          host: ${{ secrets.SSH_HOST }}
+          remote: ${{ secrets.SSH_BE_DIR }}
+          port: ${{ secrets.SSH_PORT }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+      - name: Stop the server
+        run: ssh staging 'sudo systemctl stop node_ws_chat'
+      - name: Start the server
+        run: ssh staging 'sudo systemctl start node_ws_chat'
