@@ -6,7 +6,7 @@ import router from './router';
 import store from './store';
 
 Vue.use(VueChatScroll);
-Vue.use(VueNativeSock, 'wss://chat-app.neuz8t.de', { reconnection: true, format: 'json' });
+Vue.use(VueNativeSock, 'wss://chat-app.xatellite.io', { reconnection: true, format: 'json' });
 
 Vue.config.productionTip = false;
 
