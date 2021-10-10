@@ -44,9 +44,9 @@
     <a href="https://github.com/github_username/repo"><strong>Explore the docs »</strong></a>
     <br /> -->
     <br />
-    <a href="https://chat.neuz8t.de/">View Client Demo</a>
+    <a href="https://chat.xatellite.io/">View Client Demo</a>
     ·
-    <a href="https://chat.neuz8t.de/admin">View Admin Demo</a>
+    <a href="https://chat.xatellite.io/admin">View Admin Demo</a>
     ·
     <a href="https://github.com/TheNewCivilian/simple-websocket-chat/issues">Report Bug</a>
     ·
@@ -154,8 +154,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact & Contributors
-
-TheNewCivilian - [https://neuz8t.de](https://neuz8t.de) - private Webpage
 
 Project Link: [https://github.com/TheNewCivilian/simple-websocket-chat](https://github.com/TheNewCivilian/simple-websocket-chat)
 
